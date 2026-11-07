@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#102e39" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%A3%3C/text%3E%3C/svg%3E" />
+  <title>Little Fin — A Fishing Adventure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Little Fin home"><span class="brand-icon">〰</span><span>little fin<span class="brand-dot">.</span></span></a>
+      <div class="season"><span class="season-icon">☀</span> DAY <b id="day-count">01</b><span class="season-divider"></span><span class="weather">Clear skies</span></div>
+      <div class="top-actions"><button class="icon-button" id="sound-toggle" title="Toggle sound" aria-label="Toggle sound">♫</button><button class="icon-button" id="help-button" title="How to play" aria-label="How to play">?</button></div>
+    </header>
+
+    <main class="game-layout">
+      <section class="main-column">
+        <section class="scene-card" id="scene-card">
+          <div class="scene-sky"><div class="sun"></div><div class="cloud cloud-one"></div><div class="cloud cloud-two"></div><div class="distant-island island-one"></div><div class="distant-island island-two"></div></div>
+          <div class="scene-title"><span class="location-pin">⌖</span><div><span class="eyebrow">YOUR CURRENT SPOT</span><h1 id="zone-name">Pebble Bay</h1></div><button class="zone-switch" id="zone-switch">Change spot <span>↗</span></button></div>
+          <div class="water" id="water"><div class="water-shimmer shimmer-a"></div><div class="water-shimmer shimmer-b"></div><div class="water-shimmer shimmer-c"></div><div class="water-ripple ripple-one"></div><div class="water-ripple ripple-two"></div><div class="water-ripple ripple-three"></div><div class="water-depth"></div>
+            <div class="boat"><div class="boat-canopy"></div><div class="boat-body"></div><div class="boat-seat"></div><div class="angler"><div class="angler-head"></div><div class="angler-body"></div><div class="angler-hat"></div></div></div>
+            <div class="fishing-line" id="fishing-line"></div><div class="bobber" id="bobber"><span></span></div>
+            <div class="fish-silhouette fish-one">›°)))彡</div><div class="fish-silhouette fish-two">›°)))彡</div>
+            <div class="scene-fish" id="scene-fish">🐟</div>
+            <div class="boss-scene" id="boss-scene" aria-hidden="true"><div class="boss-glow"></div><div class="boss-sprite" id="boss-sprite">🐋</div><div class="boss-name" id="boss-scene-name">THE OLD TIDE</div></div>
+            <div class="scene-status" id="scene-status"><span class="status-pulse"></span><span id="status-copy">The water is calm...</span></div>
+            <div class="scene-bottom"><span>🌊 <span id="depth-label">Shallows</span></span><span class="scene-coordinate">LAT 04° 12′ N &nbsp;·&nbsp; SEA LEVEL</span></div>
+          </div>
+          <div class="scene-footer"><div class="location-badge"><span id="zone-emoji">🏖️</span><span><b id="zone-short">PEBBLE BAY</b><small id="zone-subtitle">A good place to start</small></span></div><div class="scene-stats"><span><small>FISH CAUGHT</small><b id="total-caught">0</b></span><i></i><span><small>BEST CATCH</small><b id="best-catch">—</b></span></div></div>
+        </section>
+
+        <section class="action-card">
+          <div class="action-copy"><div class="action-icon" id="action-icon">🎣</div><div><div class="action-title" id="action-title">Ready when you are</div><div class="action-subtitle" id="action-subtitle">Cast your line and see what bites.</div></div></div>
+          <button class="cast-button" id="cast-button"><span class="cast-icon">⌁</span><span id="cast-label">Cast line</span><span class="button-key">SPACE</span></button>
+          <div class="bite-meter" id="bite-meter"><span class="meter-label">REEL IN!</span><div class="meter-track"><div class="meter-fill" id="meter-fill"></div><div class="sweet-spot"></div></div><span class="meter-hint">Tap to keep the tension in the green</span></div>
+        </section>
+
+        <section class="progress-card"><div class="progress-top"><div><span class="eyebrow">ANGLER RANK</span><div class="rank-name"><span id="rank-icon">🪶</span><b id="rank-name">New Angler</b><span class="rank-level" id="rank-level">LVL 1</span></div></div><div class="xp-text"><b id="xp-current">0</b> / <span id="xp-needed">100</span> XP</div></div><div class="xp-track"><div class="xp-fill" id="xp-fill"></div></div><div class="xp-next"><span id="xp-next-label">Catch fish to earn XP</span><span id="rank-next">Next: River Regular</span></div></section>
+      </section>
+
+      <aside class="side-column">
+        <section class="wallet-card"><div class="wallet-top"><span class="eyebrow">YOUR WALLET</span><span class="coin-shine">✦</span></div><div class="coin-total"><span class="coin-icon">◉</span><b id="coins">35</b><span class="coin-name">shells</span></div><div class="wallet-bottom"><span>Lifetime earned</span><b>◉ <span id="lifetime-coins">35</span></b></div></section>
+
+        <section class="panel upgrades-panel"><div class="panel-heading"><div><span class="eyebrow">MAKE EVERY CAST COUNT</span><h2>Fishing kit <span class="heading-spark">✦</span></h2></div><span class="kit-level" id="kit-level">STARTER KIT</span></div>
+          <div class="upgrade-list" id="upgrade-list"></div>
+        </section>
+
+        <section class="panel journal-panel"><div class="panel-heading journal-heading"><div><span class="eyebrow">THE ONE THAT GOT AWAY?</span><h2>Field journal</h2></div><button class="view-all" id="journal-button">View all <span>→</span></button></div><div class="journal-row" id="journal-row"></div><div class="journal-footer"><span>SPECIES DISCOVERED</span><b id="species-count">0 <small>/ 12</small></b></div></section>
+
+        <section class="boss-teaser" id="boss-teaser"><div class="boss-teaser-icon">🐋</div><div class="boss-teaser-copy"><span class="eyebrow">A LEGEND LURKS BELOW</span><b id="boss-teaser-title">The Old Tide</b><small id="boss-teaser-desc">Reach rank 3 to challenge the bay's guardian.</small></div><div class="boss-lock" id="boss-lock">🔒</div></section>
+        <div class="save-note"><span class="save-dot"></span> Progress saves automatically</div>
+      </aside>
+    </main>
+
+    <nav class="bottom-nav"><button class="nav-item active" data-tab="fishing"><span>🎣</span> Fishing</button><button class="nav-item" data-tab="journal"><span>📖</span> Journal <i id="nav-journal-count">0</i></button><button class="nav-item" data-tab="upgrades"><span>🧰</span> Kit</button><button class="nav-item" data-tab="waters"><span>🗺️</span> Waters</button></nav>
+    <footer class="page-footer"><span>Little Fin <span>·</span> Find your quiet place.</span><span>Made for the love of little things <b>♥</b></span></footer>
+  </div>
+
+  <div class="modal-backdrop" id="modal-backdrop" hidden><section class="modal" role="dialog" aria-modal="true"><button class="modal-close" id="modal-close" aria-label="Close">×</button><div id="modal-content"></div></section></div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="game.js"></script>
+</body>
+</html>
