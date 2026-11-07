@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#10121b">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23191b2b'/%3E%3Cpath d='M16 4 19 12 27 9 23 16 28 22 20 21 16 29 13 21 5 23 10 16 5 10 13 12Z' fill='%23ffbd72'/%3E%3C/svg%3E">
+  <title>Borrowed Name — A Midnight Identity Crisis</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game-shell">
+    <header class="topbar">
+      <a class="wordmark" href="#" aria-label="Borrowed Name home"><span class="mark">✳</span> NIGHT SHIFT <i>STORIES</i></a>
+      <div class="chapter">CHAPTER 01 <span>·</span> THE MIX-UP</div>
+      <button class="sound-toggle" id="soundToggle" aria-label="Toggle ambient sound" title="Toggle ambient sound">♫ <span>AMBIENCE</span><b>OFF</b></button>
+    </header>
+
+    <section class="game" aria-label="Borrowed Name game">
+      <div class="scene-wrap">
+        <canvas id="scene" width="640" height="300" aria-label="Pixel art scene in a rainy alley"></canvas>
+        <div class="scene-vignette"></div>
+        <div class="scene-topline"><span><i class="live-dot"></i> EAST MERIDIAN · 12:17 AM</span><span class="weather">☂ &nbsp;DRIZZLE</span></div>
+        <div class="scene-caption" id="sceneCaption">A very small misunderstanding.</div>
+        <button class="hotspot hs-bin" data-clue="bin" aria-label="Inspect the tipped trash bin" title="Inspect the tipped bin"><span>!</span></button>
+        <button class="hotspot hs-puddle" data-clue="puddle" aria-label="Inspect the puddle" title="Inspect the puddle"><span>!</span></button>
+        <button class="hotspot hs-poster" data-clue="poster" aria-label="Inspect the missing pet poster" title="Inspect the poster"><span>!</span></button>
+        <div class="scene-hint" id="sceneHint">LOOK AROUND <span>·</span> 3 CLUES</div>
+      </div>
+
+      <section class="casebar" aria-label="Case status">
+        <div class="case-id"><span class="case-icon">✉</span><div><small>OPEN CASE</small><strong>WHO IS MARA VALE?</strong></div></div>
+        <div class="trust-block"><div class="trust-label"><span>RACCOON'S TRUST</span><b id="trustText">WARY</b></div><div class="trust-meter" aria-label="Raccoon's trust"><span id="trustFill"></span></div></div>
+        <div class="clue-counter"><span class="clue-glyph">▣</span><strong id="clueCount">0</strong><small>CLUES</small></div>
+      </section>
+
+      <section class="conversation" id="conversation" aria-live="polite">
+        <div class="portrait" aria-hidden="true"><div class="portrait-pixel">R</div><span class="portrait-status"></span></div>
+        <div class="dialogue-copy"><div class="speaker-row"><strong id="speaker">RASPUTIN</strong><span id="mood">NOT CONVINCED</span></div><p id="dialogue">“I am Mara Vale,” the raccoon says, holding your library card upside down. “So unless you can prove otherwise, you’re the raccoon.”</p></div>
+        <button class="skip-button" id="restartTop" title="Restart the story" aria-label="Restart game">↺</button>
+      </section>
+
+      <section class="action-area" id="actionArea">
+        <div class="action-heading"><span id="promptLabel">WHAT DO YOU DO?</span><span class="keyboard-hint">TIP: THE DETAILS MATTER</span></div>
+        <div class="choices" id="choices"></div>
+        <div class="evidence-row"><div class="evidence-label"><span>YOUR POCKETS</span><small>GATHER PROOF AROUND YOU</small></div><div class="evidence-list" id="evidenceList"></div></div>
+      </section>
+      <footer class="footer"><span>✳ &nbsp;A LITTLE TALE ABOUT BEING KNOWN</span><span>ARROW KEYS TO CHOOSE <i>·</i> ENTER TO CONFIRM</span></footer>
+    </section>
+  </main>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="game.js"></script>
+</body>
+</html>
