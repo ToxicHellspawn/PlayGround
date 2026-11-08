@@ -118,13 +118,13 @@ kbd{font-family:var(--mono);font-size:8px;background:#1b271b;border:1px solid #3
 .detail-col::-webkit-scrollbar{width:5px}.detail-col::-webkit-scrollbar-thumb{background:#3c4c37}
 .dname{font-family:var(--display);font-size:31px;letter-spacing:2px;line-height:.95;color:#e9e6d3}
 .dcal{font-size:8px;letter-spacing:3px;color:var(--amber);margin:5px 0 10px}
-.ddesc{font-size:9px;line-height:1.8;color:#94a387;margin-bottom:14px;min-height:32px}
-.statline{display:flex;align-items:center;gap:10px;margin:6px 0;font-size:8px;letter-spacing:1px;color:var(--muted)}
+.ddesc{font-size:9px;line-height:1.8;color:#94a387;margin-bottom:10px;min-height:0}
+.statline{display:flex;align-items:center;gap:10px;margin:4px 0;font-size:8px;letter-spacing:1px;color:var(--muted)}
 .statline span{width:78px;flex:none;white-space:nowrap}
 .statbar{flex:1;height:4px;background:#202a1d;overflow:hidden}
 .statbar i{display:block;height:100%;background:linear-gradient(90deg,#7c9e6d,var(--amber))}
 .statline b{width:56px;text-align:right;font-weight:500;color:#d5e0c8;font-size:8px}
-.upgrade-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid rgba(213,230,195,.08);font-size:8px}
+.upgrade-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid rgba(213,230,195,.08);font-size:8px}
 .upgrade-row .un{flex:1}
 .upgrade-row .un small{display:block;color:var(--dim);font-size:7px;letter-spacing:.4px;margin-top:3px}
 .pips{display:flex;gap:2px;margin-right:4px}
@@ -133,8 +133,8 @@ kbd{font-family:var(--mono);font-size:8px;background:#1b271b;border:1px solid #3
 .upbuy{border:1px solid var(--line2);padding:5px 7px;font-size:7px;letter-spacing:1px;color:#cbd8bf;background:rgba(255,255,255,.03);min-width:58px}
 .upbuy:hover{border-color:var(--amber);color:var(--amber2)}
 .upbuy:disabled{opacity:.3}
-.equipped-tag{margin-top:14px;border:1px solid rgba(143,211,154,.38);background:rgba(143,211,154,.07);color:var(--green);font-size:8px;letter-spacing:2px;padding:9px 10px;text-align:center}
-.comp-card{border:1px solid rgba(229,180,91,.35);background:rgba(229,180,91,.05);padding:9px;margin-top:14px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.equipped-tag{margin-top:10px;border:1px solid rgba(143,211,154,.38);background:rgba(143,211,154,.07);color:var(--green);font-size:8px;letter-spacing:2px;padding:7px 10px;text-align:center}
+.comp-card{border:1px solid rgba(229,180,91,.35);background:rgba(229,180,91,.05);padding:8px 9px;margin-top:10px;display:flex;justify-content:space-between;gap:10px;align-items:center}
 .comp-card .ct{font-size:8px;letter-spacing:1.5px;color:var(--amber2)}
 .comp-card small{display:block;font-size:7px;line-height:1.6;color:#8d9b80;margin-top:3px}
 .ammo-item{border:1px solid var(--line);padding:8px 9px;margin-bottom:6px;cursor:pointer;font-size:8px}
@@ -152,6 +152,7 @@ kbd{font-family:var(--mono);font-size:8px;background:#1b271b;border:1px solid #3
 .debrief-frame{width:min(700px,90%);padding:32px 36px 26px;text-align:center}
 .debrief-kicker{font-size:9px;letter-spacing:5px;color:var(--green)}
 .debrief-kicker.fail{color:var(--red)}
+.debrief-kicker.win{color:var(--amber2);text-shadow:0 0 18px rgba(229,180,91,.45)}
 .debrief-frame h2{font-family:var(--display);font-size:44px;letter-spacing:2px;margin:8px 0 2px;color:#eae6d2}
 .debrief-sub{font-size:8px;letter-spacing:3px;color:var(--dim);margin-bottom:20px}
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);background:rgba(255,255,255,.015);margin-bottom:16px}
@@ -553,7 +554,7 @@ const UPGRADES = [
 
 const OPS = [
   { name:'COLD BORE', targets:3, rmin:180, rmax:265, wmin:0.4, wmax:1.8, time:240, weather:'clear',
-    types:['static','static','walk'], cover:0.10, reward:1.0, threat:'LOW',
+    types:['static','static','static'], cover:0.10, reward:1.0, threat:'LOW',
     note:'Three sentries on the valley floor. Confirm your zero, read the wind, and do not rush the first shot.' },
   { name:'CROSSWIND', targets:4, rmin:220, rmax:340, wmin:1.5, wmax:3.6, time:215, weather:'clear',
     types:['static','walk','walk','static'], cover:0.20, reward:1.12, threat:'LOW',
@@ -661,6 +662,7 @@ let timeScale = 1, slowmoT = 0;
 let screenFlash = 0, lightning = 0, lightningTimer = 12;
 let lastHudUpdate = 0;
 let pointerLocked = false;
+let pointerWasLocked = false;
 let showHelp = true;
 let muted = false;
 
@@ -1480,7 +1482,7 @@ function makeTarget(cfg, i, n, rnd, opNum){
     x = Math.tan(az)*z;
   }
   let type = cfg.types[i % cfg.types.length];
-  if (type === 'static' && rnd()<0.28) type = 'walk';
+  if (type === 'static' && opNum > 1 && rnd()<0.28) type = 'walk';
   const cover = type !== 'runner' && rnd() < cfg.cover;
   const popup = type === 'popup';
   const mound = rnd() < 0.18 ? 2.5 + rnd()*6 : 0;
@@ -2123,7 +2125,6 @@ function updateAmbient(dt){
       setTimeout(()=>sfx('thunder'),500+Math.random()*900);
     }
   }
-  if (lightning>0);
   if (state==='paused') return;
   updateEffects(dt*0.3);
 }
@@ -2588,8 +2589,9 @@ function finishMission(success){
   const completion=success?Math.round(220+cfg.targets*45+mission.op*35):0;
   const accBonus=success?(acc>=0.7?220:acc>=0.5?110:0):0;
   const speedBonus=success?Math.round(mission.timeLeft*1.5):0;
-  const subBonus=lo.ammo.sub?Math.round((killCredits+completion+accBonus+speedBonus)*0.25):0;
-  const total=killCredits+completion+accBonus+speedBonus+subBonus;
+  const campaignBonus=success&&mission.op>=OPS.length?3000:0;
+  const subBonus=lo.ammo.sub?Math.round((killCredits+completion+accBonus+speedBonus+campaignBonus)*0.25):0;
+  const total=killCredits+completion+accBonus+speedBonus+campaignBonus+subBonus;
   career.credits=Math.max(0,career.credits+total);
   career.totals.kills+=mission.kills; career.totals.shots+=mission.shots;
   career.totals.heads+=mission.headshots; career.totals.best=Math.max(career.totals.best,mission.best);
@@ -2598,7 +2600,8 @@ function finishMission(success){
     career.op=Math.max(career.op,mission.op+1);
   }
   saveCareer();
-  lastDebrief={success,total,killCredits,completion,accBonus,speedBonus,subBonus,acc};
+  lastDebrief={success,total,killCredits,completion,accBonus,speedBonus,campaignBonus,subBonus,acc,
+    campaignComplete:success&&mission.op>=OPS.length};
   populateDebrief();
   $('screen-debrief').classList.add('active');
   sfx(success?'complete':'fail');
@@ -2607,8 +2610,9 @@ let lastDebrief=null;
 function populateDebrief(){
   if (!mission || !lastDebrief) return;
   const d=lastDebrief, cfg=mission.cfg;
-  $('debriefKicker').textContent=d.success?'OPERATION COMPLETE':'OPERATION FAILED';
+  $('debriefKicker').textContent=d.campaignComplete?'CAMPAIGN COMPLETE':d.success?'OPERATION COMPLETE':'OPERATION FAILED';
   $('debriefKicker').classList.toggle('fail',!d.success);
+  $('debriefKicker').classList.toggle('win',!!d.campaignComplete);
   $('debriefTitle').textContent=cfg.name;
   $('debriefSub').textContent=`SECTOR IRON VALLEY · ${WEATHER[cfg.weather].label} · OP ${String(mission.op).padStart(2,'0')}`;
   $('dbKills').innerHTML=`${mission.kills}<small>/${mission.targets.length}</small>`;
@@ -2621,12 +2625,14 @@ function populateDebrief(){
     ['ACCURACY BONUS', d.accBonus],
     ['TIME BONUS', d.speedBonus]
   ];
+  if (d.campaignBonus) rows.push(['CAMPAIGN BONUS', d.campaignBonus]);
   if (d.subBonus) rows.push(['SUBSONIC BONUS', d.subBonus]);
   $('rewardList').innerHTML=rows.filter(r=>r[1]>0).map(r=>`<div class="reward-line"><span>${r[0]}</span><span>+${fmtInt(r[1])} CR</span></div>`).join('')
     +`<div class="reward-line total"><span>TOTAL CREDITS</span><span>+${fmtInt(d.total)} CR</span></div>`;
   const nextOp=career.op;
   const nextCfg=opConfig(nextOp);
-  const nextLabel=d.success?`NEXT · OP ${String(nextOp).padStart(2,'0')} ${nextCfg.name}`:'REDEPLOY OPERATION';
+  const nextLabel=d.campaignComplete?'ENTER VETERAN OPS':
+    d.success?`NEXT · OP ${String(nextOp).padStart(2,'0')} ${nextCfg.name}`:'REDEPLOY OPERATION';
   $('debriefActions').innerHTML=`
     <button class="btn primary" id="btnDebriefNext">${nextLabel}</button>
     <button class="btn" id="btnDebriefArmory">ARMORY</button>
@@ -3008,9 +3014,15 @@ document.addEventListener('mousemove',e=>{
 });
 document.addEventListener('pointerlockchange',()=>{
   pointerLocked=document.pointerLockElement===canvas;
+  if (pointerLocked) pointerWasLocked=true;
+  else if (pointerWasLocked){
+    const wasMission=state==='mission';
+    pointerWasLocked=false;
+    if (wasMission){ pauseGame(); return; }
+  }
   updateHUD(true);
 });
-document.addEventListener('pointerlockerror',()=>{ pointerLocked=false; });
+document.addEventListener('pointerlockerror',()=>{ pointerLocked=false; pointerWasLocked=false; });
 window.addEventListener('keydown',keyDown);
 window.addEventListener('keyup',keyUp);
 window.addEventListener('blur',()=>{ for (const k in keys) keys[k]=false; if (state==='mission') pauseGame(); });
@@ -3021,7 +3033,11 @@ function pollGamepad(dt){
   let gp=null;
   if (pads){ for (const p of pads){ if (p&&p.connected){ gp=p; break; } } }
   if (!gp){
-    if (gamepadState.index>=0){ gamepadState.index=-1; gamepadState.name=''; if (state==='title') showTitle(); }
+    if (gamepadState.index>=0){
+      gamepadState.index=-1; gamepadState.name=''; gamepadState.axes=[0,0,0,0];
+      gamepadState.scope=0; gamepadState.breath=0; gamepadState.fire=0;
+      if (state==='title') showTitle();
+    }
     return;
   }
   if (gamepadState.index!==gp.index){
